@@ -623,6 +623,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpKey: 32
   _attackKey: 102
+  _vampirKey: 101
 --- !u!114 &566111232920817510
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,9 @@
 using UnityEngine;
+using System.Collections;
+using System;
 
+[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(InputHandler))]
 public class Vampirism : MonoBehaviour
 {
     [SerializeField] private float _duration = 6f;
@@ -7,18 +11,20 @@ public class Vampirism : MonoBehaviour
     [SerializeField] private float _radius = 3f;
     [SerializeField] private float _damagePerSecond = 10f;
     [SerializeField] private Health _playerHealth;
-    [SerializeField] private VampirismBar _uiBar;
     [SerializeField] private InputHandler _inputHandler;
 
-    private float _timer;
     private bool _isActive;
     private bool _isOnCooldown;
+
+    public event Action Activated;
+    public event Action Deactivated;
+
+    public float Radius => _radius;
 
     private void Awake()
     {
         _playerHealth = GetComponent<Health>();
         _inputHandler = GetComponent<InputHandler>();
-        _uiBar = GetComponent<VampirismBar>();
     }
 
     private void OnEnable()
@@ -31,110 +37,123 @@ public class Vampirism : MonoBehaviour
         _inputHandler.VampirCommand -= OnVampirCommand;
     }
 
-    private void Update()
-    {
-        HandleState(Time.deltaTime);
-
-        if (_isActive)
-        {
-            DrainNearestEnemy(Time.deltaTime);
-        }
-    }
-
     private void OnVampirCommand()
     {
-        TryActivate();
+        if (_isActive)
+        {
+            return;
+        }
+
+        if (_isOnCooldown)
+        {
+            return;
+        }
+
+        StartCoroutine(VampirismRoutine());
     }
 
-    private void TryActivate()
+    private void Activate()
     {
-        if (_isActive == true || _isOnCooldown == true)
-            return;
-
         _isActive = true;
         _isOnCooldown = false;
-        _timer = _duration;
-
-        if (_uiBar != null)
-            _uiBar.SetStateActive(_duration);
+        Activated?.Invoke();
     }
 
-    private void HandleState(float deltaTime)
+    private void Deactivate()
     {
-        if (_isActive == true)
-        {
-            _timer -= deltaTime;
-
-            if (_uiBar != null)
-                _uiBar.UpdateActive(_timer);
-
-            if (_timer <= 0f)
-            {
-                _isActive = false;
-                _isOnCooldown = true;
-                _timer = _cooldown;
-
-                if (_uiBar != null)
-                    _uiBar.SetStateCooldown(_cooldown);
-            }
-        }
-        else if (_isOnCooldown == true)
-        {
-            _timer -= deltaTime;
-
-            if (_uiBar != null)
-                _uiBar.UpdateCooldown(_timer);
-
-            if (_timer <= 0f)
-            {
-                _isOnCooldown = false;
-
-                if (_uiBar != null)
-                    _uiBar.SetStateReady();
-            }
-        }
+        _isActive = false;
+        _isOnCooldown = true;
+        Deactivated?.Invoke();
     }
 
-    private void DrainNearestEnemy(float deltaTime)
+    private IEnumerator VampirismRoutine()
+    {
+        Activate();
+        float timer = _duration;
+
+        while (timer > 0f)
+        {
+            float deltaTime = Time.deltaTime;
+            ProcessDrain(deltaTime);
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        Deactivate();
+        StartCoroutine(CooldownRoutine());
+    }
+
+    private IEnumerator CooldownRoutine()
+    {
+        float timer = _cooldown;
+
+        while (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        _isOnCooldown = false;
+    }
+
+    private void ProcessDrain(float deltaTime)
+    {
+        Enemy enemy = FindNearestEnemy();
+
+        if (enemy == null)
+        {
+            return;
+        }
+
+        bool healthOfEnemy = enemy.TryGetComponent(out Health enemyHealth);
+
+        if (healthOfEnemy == false)
+        {
+            return;
+        }
+
+        ApplyDrain(enemyHealth, deltaTime);
+    }
+
+    private Enemy FindNearestEnemy()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _radius);
 
         if (hits.Length == 0)
-            return;
+        {
+            return null;
+        }
 
         Enemy nearestEnemy = null;
-        float bestDistSqr = float.MaxValue;
+        float bestDist = float.MaxValue;
         Vector2 selfPos = transform.position;
 
-        foreach (var hit in hits)
+        foreach (Collider2D hit in hits)
         {
-            Enemy enemy = hit.GetComponent<Enemy>();
+            bool hasEnemy = hit.TryGetComponent(out Enemy enemy);
 
-            if (enemy == null)
-                continue;
-
-            float sqr = ((Vector2)enemy.transform.position - selfPos).sqrMagnitude;
-
-            if (sqr < bestDistSqr)
+            if (hasEnemy == false)
             {
-                bestDistSqr = sqr;
+                continue;
+            }
+
+            float dist = ((Vector2)enemy.transform.position - selfPos).sqrMagnitude;
+
+            if (dist < bestDist)
+            {
+                bestDist = dist;
                 nearestEnemy = enemy;
             }
         }
 
-        if (nearestEnemy == null)
-            return;
+        return nearestEnemy;
+    }
 
-        Health enemyHealth = nearestEnemy.GetComponent<Health>();
-
-        if (enemyHealth == null)
-            return;
-
+    private void ApplyDrain(Health enemyHealth, float deltaTime)
+    {
         float damage = _damagePerSecond * deltaTime;
         enemyHealth.TakeDamage(damage);
-
-        if (_playerHealth != null)
-            _playerHealth.Heal(damage);
+        _playerHealth.Heal(damage);
     }
 
     private void OnDrawGizmosSelected()

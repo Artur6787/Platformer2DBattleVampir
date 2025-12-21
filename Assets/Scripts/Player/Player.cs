@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(DamageReceiver))]
+[RequireComponent(typeof(Health))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private Health _health;

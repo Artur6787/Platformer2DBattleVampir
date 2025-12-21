@@ -1,35 +1,34 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class VampirismBar : MonoBehaviour
 {
-    [SerializeField] private Slider _slider;
+    [SerializeField] private Vampirism _vampirism;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
 
-    public void SetStateReady()
+    private void Awake()
     {
-        _slider.value = 1f;
+        _spriteRenderer.enabled = false;
     }
 
-    public void SetStateActive(float duration)
+    private void OnEnable()
     {
-        _slider.maxValue = duration;
-        _slider.value = duration;
+        _vampirism.Activated += OnActivated;
+        _vampirism.Deactivated += OnDeactivated;
     }
 
-    public void UpdateActive(float timeLeft)
+    private void OnDisable()
     {
-        _slider.value = Mathf.Clamp(timeLeft, 0f, _slider.maxValue);
+        _vampirism.Activated -= OnActivated;
+        _vampirism.Deactivated -= OnDeactivated;
     }
 
-    public void SetStateCooldown(float cooldown)
+    private void OnActivated()
     {
-        _slider.maxValue = cooldown;
-        _slider.value = 0f;
+        _spriteRenderer.enabled = true;
     }
 
-    public void UpdateCooldown(float timeLeft)
+    private void OnDeactivated()
     {
-        float elapsed = _slider.maxValue - Mathf.Clamp(timeLeft, 0f, _slider.maxValue);
-        _slider.value = elapsed;
+        _spriteRenderer.enabled = false;
     }
 }
