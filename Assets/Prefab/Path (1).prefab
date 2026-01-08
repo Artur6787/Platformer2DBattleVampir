@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 4221197624114429958}
   - component: {fileID: 8135463028247652473}
   - component: {fileID: 3862934257263825015}
+  - component: {fileID: 7436260086015192177}
   - component: {fileID: 8084909535629362659}
   - component: {fileID: 6389787043916396976}
   - component: {fileID: 8193144259284185997}
@@ -187,8 +188,6 @@ GameObject:
   - component: {fileID: 6931888639729107205}
   - component: {fileID: 2073039452925791963}
   - component: {fileID: 4622700529923585560}
-  - component: {fileID: 3147827263072794225}
-  - component: {fileID: 7436260086015192177}
   m_Layer: 7
   m_Name: EnemyRoot
   m_TagString: Untagged
@@ -284,6 +283,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5236292, y: 1.9215896}
   m_EdgeRadius: 0
+--- !u!114 &7436260086015192177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048232332704601535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b894664304961b46ae56ffa9e0aa559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealthPoints: 100
 --- !u!114 &8084909535629362659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,32 +407,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprite: {fileID: 0}
---- !u!114 &3147827263072794225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7048232332704601535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 179caa021447f25479c6fe05f869296b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageAmount: 10
---- !u!114 &7436260086015192177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7048232332704601535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b894664304961b46ae56ffa9e0aa559, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealthPoints: 100
 --- !u!1 &9107164623218442084
 GameObject:
   m_ObjectHideFlags: 0

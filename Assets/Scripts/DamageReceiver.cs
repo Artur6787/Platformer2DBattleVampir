@@ -1,7 +1,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
-[RequireComponent(typeof(Invincibility))]
 public class DamageReceiver : MonoBehaviour
 {
     private Health _health;

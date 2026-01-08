@@ -36,8 +36,8 @@ public class Mover : MonoBehaviour
 
         if (_attacker != null)
         {
-            _attacker.AttackStarted += StartAttack;
-            _attacker.AttackEnded += EndAttack;
+            _attacker.AttackStarted += OnAttackStarted;
+            _attacker.AttackEnded += OnAttackEnded;
         }
     }
 
@@ -49,8 +49,8 @@ public class Mover : MonoBehaviour
 
         if (_attacker != null)
         {
-            _attacker.AttackStarted -= StartAttack;
-            _attacker.AttackEnded -= EndAttack;
+            _attacker.AttackStarted -= OnAttackStarted;
+            _attacker.AttackEnded -= OnAttackEnded;
         }
     }
 
@@ -71,13 +71,12 @@ public class Mover : MonoBehaviour
         Jump();
     }
 
-    public void StartAttack()
+    private void OnAttackStarted()
     {
         _isAttacking = true;
-        _animationHandler.TriggerAttack();
     }
 
-    public void EndAttack()
+    private void OnAttackEnded()
     {
         _isAttacking = false;
     }

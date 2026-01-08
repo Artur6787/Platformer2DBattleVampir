@@ -4,7 +4,7 @@ using System;
 
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(InputHandler))]
-public class Vampirism : MonoBehaviour
+public class Vampirism : MonoBehaviour, IFillable
 {
     [SerializeField] private float _duration = 6f;
     [SerializeField] private float _cooldown = 4f;
@@ -15,11 +15,11 @@ public class Vampirism : MonoBehaviour
 
     private bool _isActive;
     private bool _isOnCooldown;
+    private float _currentFill = 1f;
 
     public event Action Activated;
     public event Action Deactivated;
-
-    public float Radius => _radius;
+    public event Action<float> ValueChanged;
 
     private void Awake()
     {
@@ -39,12 +39,12 @@ public class Vampirism : MonoBehaviour
 
     private void OnVampirCommand()
     {
-        if (_isActive)
+        if (_isActive == true || _isOnCooldown == true)
         {
             return;
         }
 
-        if (_isOnCooldown)
+        if (_playerHealth.CurrentHealthPoints >= _playerHealth.MaxHealthPoints)
         {
             return;
         }
@@ -55,14 +55,12 @@ public class Vampirism : MonoBehaviour
     private void Activate()
     {
         _isActive = true;
-        _isOnCooldown = false;
         Activated?.Invoke();
     }
 
     private void Deactivate()
     {
         _isActive = false;
-        _isOnCooldown = true;
         Deactivated?.Invoke();
     }
 
@@ -75,24 +73,37 @@ public class Vampirism : MonoBehaviour
         {
             float deltaTime = Time.deltaTime;
             ProcessDrain(deltaTime);
+
+            if (_playerHealth.CurrentHealthPoints >= _playerHealth.MaxHealthPoints)
+            {
+                break;
+            }
+
             timer -= Time.deltaTime;
+            _currentFill = timer / _duration;
+            ValueChanged?.Invoke(_currentFill);
             yield return null;
         }
 
         Deactivate();
-        StartCoroutine(CooldownRoutine());
+        StartCoroutine(CooldownRoutine(_currentFill));
     }
 
-    private IEnumerator CooldownRoutine()
+    private IEnumerator CooldownRoutine(float startValue)
     {
+        _isOnCooldown = true;
         float timer = _cooldown;
 
         while (timer > 0f)
         {
             timer -= Time.deltaTime;
+            _currentFill = Mathf.Lerp(startValue, 1f, 1f - timer / _cooldown);
+            ValueChanged?.Invoke(_currentFill);
             yield return null;
         }
 
+        _currentFill = 1f;
+        ValueChanged?.Invoke(1f);
         _isOnCooldown = false;
     }
 
@@ -105,9 +116,7 @@ public class Vampirism : MonoBehaviour
             return;
         }
 
-        bool healthOfEnemy = enemy.TryGetComponent(out Health enemyHealth);
-
-        if (healthOfEnemy == false)
+        if (enemy.TryGetComponent(out Health enemyHealth) == false)
         {
             return;
         }
@@ -118,42 +127,37 @@ public class Vampirism : MonoBehaviour
     private Enemy FindNearestEnemy()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _radius);
-
-        if (hits.Length == 0)
-        {
-            return null;
-        }
-
-        Enemy nearestEnemy = null;
+        Enemy nearest = null;
         float bestDist = float.MaxValue;
         Vector2 selfPos = transform.position;
 
         foreach (Collider2D hit in hits)
         {
-            bool hasEnemy = hit.TryGetComponent(out Enemy enemy);
-
-            if (hasEnemy == false)
-            {
+            if (!hit.TryGetComponent(out Enemy enemy))
                 continue;
-            }
 
             float dist = ((Vector2)enemy.transform.position - selfPos).sqrMagnitude;
 
             if (dist < bestDist)
             {
                 bestDist = dist;
-                nearestEnemy = enemy;
+                nearest = enemy;
             }
         }
 
-        return nearestEnemy;
+        return nearest;
     }
 
     private void ApplyDrain(Health enemyHealth, float deltaTime)
     {
-        float damage = _damagePerSecond * deltaTime;
-        enemyHealth.TakeDamage(damage);
-        _playerHealth.Heal(damage);
+        if (_playerHealth.CurrentHealthPoints >= _playerHealth.MaxHealthPoints)
+            return;
+
+        float wantedDamage = _damagePerSecond * deltaTime;
+        float actualDamage = enemyHealth.TakeDamage(wantedDamage);
+
+        if (actualDamage > 0f)
+            _playerHealth.Heal(actualDamage);
     }
 
     private void OnDrawGizmosSelected()

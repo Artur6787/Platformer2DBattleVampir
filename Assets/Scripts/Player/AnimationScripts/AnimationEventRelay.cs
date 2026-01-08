@@ -8,11 +8,11 @@ public class AnimationEventRelay : MonoBehaviour
 
     public void OnHit()
     {
-        HitEvent.Invoke();
+        HitEvent?.Invoke();
     }
 
     public void OnAttackEnd()
     {
-        AttackEndEvent.Invoke();
+        AttackEndEvent?.Invoke();
     }
 }

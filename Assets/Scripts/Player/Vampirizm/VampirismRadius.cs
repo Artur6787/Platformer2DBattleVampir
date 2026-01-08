@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class VampirismBar : MonoBehaviour
+public class VampirismRadius : MonoBehaviour
 {
     [SerializeField] private Vampirism _vampirism;
     [SerializeField] private SpriteRenderer _spriteRenderer;

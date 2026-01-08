@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IFillable
 {
     [SerializeField] private float _maxHealthPoints = 100f;
 
@@ -22,26 +22,26 @@ public class Health : MonoBehaviour
         InvokeValueChanged(_currentHealthPoints, _maxHealthPoints);
     }
 
-    public void TakeDamage(float amount)
+    public float TakeDamage(float amount)
     {
-        if (amount < 0f)
-            throw new ArgumentOutOfRangeException(nameof(amount), "Урон не должен быть отрицательным.");
-
-        if (IsDead || amount == 0f)
-            return;
+        if (amount < 0f || IsDead || amount == 0f)
+            return 0f;
 
         float oldHealth = _currentHealthPoints;
         _currentHealthPoints = Mathf.Clamp(_currentHealthPoints - amount, 0f, _maxHealthPoints);
+
         float actualDamage = oldHealth - _currentHealthPoints;
 
-        if (actualDamage <= 0f)
-            return;
+        if (actualDamage > 0f)
+        {
+            Damaged?.Invoke(actualDamage);
+            InvokeValueChanged(_currentHealthPoints, _maxHealthPoints);
 
-        Damaged?.Invoke(actualDamage);
-        InvokeValueChanged(_currentHealthPoints, _maxHealthPoints);
+            if (IsDead)
+                HandleDeath();
+        }
 
-        if (IsDead)
-            HandleDeath();
+        return actualDamage;
     }
 
     public void Heal(float amount)

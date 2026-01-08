@@ -6,12 +6,14 @@ public class Invincibility : MonoBehaviour
 {
     private const string PlayerLayer = "Player";
     private const string EnemyLayer = "Enemy";
+    private const float FullyVisibleAlpha = 1f;
 
     [SerializeField] private float _protectionDuration = 2f;
     [SerializeField] private float _blinkSpeed = 0.2f;
+    [SerializeField, Range(0f, 1f)] private float _blinkAlpha = 0.3f;
 
     private bool _isProtected = false;
-    private Renderer _objectRenderer;
+    private SpriteRenderer _sprite;
     private WaitForSeconds _blinkWait;
     private int _playerLayerIndex;
     private int _enemyLayerIndex;
@@ -20,25 +22,16 @@ public class Invincibility : MonoBehaviour
 
     private void Awake()
     {
-        _objectRenderer = GetComponentInChildren<Renderer>();
+        _sprite = GetComponentInChildren<SpriteRenderer>();
         _blinkWait = new WaitForSeconds(_blinkSpeed);
         CacheLayerIndices();
     }
 
     public void MakeProtected()
     {
-        if (_isProtected)
-            return;
-
         _isProtected = true;
         SetLayerCollision(true);
-
-        if (_blinkCoroutine != null)
-            StopCoroutine(_blinkCoroutine);
-
-        if (_protectionCoroutine != null)
-            StopCoroutine(_protectionCoroutine);
-
+        StopAllCoroutines();
         _blinkCoroutine = StartCoroutine(Blinking());
         _protectionCoroutine = StartCoroutine(ProtectionTimer());
     }
@@ -69,16 +62,26 @@ public class Invincibility : MonoBehaviour
     {
         while (_isProtected)
         {
-            _objectRenderer.enabled = !_objectRenderer.enabled;
+            SetAlpha(_blinkAlpha);
+            yield return _blinkWait;
+            SetAlpha(FullyVisibleAlpha);
             yield return _blinkWait;
         }
 
-        _objectRenderer.enabled = true;
+        SetAlpha(FullyVisibleAlpha);
+    }
+
+    private void SetAlpha(float alpha)
+    {
+        Color color = _sprite.color;
+        color.a = alpha;
+        _sprite.color = color;
     }
 
     private void DisableProtection()
     {
         _isProtected = false;
         SetLayerCollision(false);
+        SetAlpha(FullyVisibleAlpha);
     }
 }

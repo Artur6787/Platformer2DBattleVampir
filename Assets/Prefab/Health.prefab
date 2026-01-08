@@ -187,7 +187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.06, y: 1.4}
+  m_AnchoredPosition: {x: 0.060058594, y: 1.4000244}
   m_SizeDelta: {x: 3.0532, y: 1.9203}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &656617663675543339
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3528570301358004028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,7 +299,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1449425963921475252}
   - component: {fileID: 6049373366428384583}
-  - component: {fileID: 7234926747281081493}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -379,21 +378,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7234926747281081493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8568031227768631742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30a2c11b7606099479e96851277e05ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _health: {fileID: 0}
-  _slider: {fileID: 6049373366428384583}
-  _smoothSpeed: 5
 --- !u!1 &9108321003193460230
 GameObject:
   m_ObjectHideFlags: 0
