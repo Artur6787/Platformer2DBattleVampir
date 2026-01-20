@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class ComboAttacker : MonoBehaviour
 {
@@ -6,9 +7,12 @@ public class ComboAttacker : MonoBehaviour
     [SerializeField] private AnimationHandler _animationHandler;
     [SerializeField] private InputHandler _inputHandler;
     [SerializeField] private float _doubleClickTime = 0.25f;
+    [SerializeField] private float _comboResetDelay = 0.4f;
 
     private int _clickCount = 0;
     private float _clickTimer = 0f;
+
+    private Coroutine _resetCoroutine;
 
     private void OnEnable()
     {
@@ -18,6 +22,7 @@ public class ComboAttacker : MonoBehaviour
     private void OnDisable()
     {
         _inputHandler.AttackCommand -= OnClick;
+        StopResetCoroutine();
     }
 
     private void Update()
@@ -50,12 +55,39 @@ public class ComboAttacker : MonoBehaviour
     private void PlaySecondAttack()
     {
         _animationHandler.TriggerComboAttack();
-        Invoke(nameof(ResetState), 0.4f);
+        Invoke(nameof(ResetState), _comboResetDelay);
     }
+
+
+
+    private void StartResetCoroutine()
+    {
+        StopResetCoroutine();
+        _resetCoroutine = StartCoroutine(ResetAfterDelay());
+    }
+
+    private void StopResetCoroutine()
+    {
+        if (_resetCoroutine != null)
+        {
+            StopCoroutine(_resetCoroutine);
+            _resetCoroutine = null;
+        }
+    }
+
+    private IEnumerator ResetAfterDelay()
+    {
+        yield return new WaitForSeconds(_comboResetDelay);
+        ResetState();
+    }
+
+
+
 
     private void ResetState()
     {
         _clickCount = 0;
         _clickTimer = 0f;
+        StopResetCoroutine();
     }
 }

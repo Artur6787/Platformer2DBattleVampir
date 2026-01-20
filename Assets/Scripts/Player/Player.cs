@@ -2,26 +2,32 @@ using UnityEngine;
 
 [RequireComponent(typeof(DamageReceiver))]
 [RequireComponent(typeof(Health))]
+[RequireComponent(typeof(Mover))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Health _health;
+    [SerializeField] private Mover _mover;
+    [SerializeField] private Attacker _attacker;
+    [SerializeField] private DamageReceiver _damageReceiver;
 
-    private DamageReceiver _damageReceiver;
+    public bool CanMove { get; private set; } = true;
 
     private void Awake()
     {
+        _mover = GetComponent<Mover>();
+        _attacker = GetComponent<Attacker>();
         _damageReceiver = GetComponent<DamageReceiver>();
-        _health = GetComponent<Health>();
     }
 
     private void OnEnable()
     {
-        _health.Died += OnDeath;
+        _attacker.AttackStarted += OnAttackStarted;
+        _attacker.AttackEnded += OnAttackEnded;
     }
 
     private void OnDisable()
     {
-        _health.Died -= OnDeath;
+        _attacker.AttackStarted -= OnAttackStarted;
+        _attacker.AttackEnded -= OnAttackEnded;
     }
 
     public void TakeDamage(int damage)
@@ -29,8 +35,13 @@ public class Player : MonoBehaviour
         _damageReceiver.TakeDamage(damage);
     }
 
-    private void OnDeath()
+    private void OnAttackStarted()
     {
-        Debug.Log("Игрок погиб!");
+        CanMove = false;
+    }
+
+    private void OnAttackEnded()
+    {
+        CanMove = true;
     }
 }

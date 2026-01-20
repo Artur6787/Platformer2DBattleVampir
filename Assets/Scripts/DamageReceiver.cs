@@ -3,13 +3,14 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class DamageReceiver : MonoBehaviour
 {
+    [SerializeField] private Invincibility _invincibility;
+
     private Health _health;
-    private Invincibility _invincibility;
 
     private void Awake()
     {
         _health = GetComponent<Health>();
-        _invincibility = GetComponent<Invincibility>();
+        //_invincibility = GetComponent<Invincibility>();
     }
 
     public void TakeDamage(int damage)

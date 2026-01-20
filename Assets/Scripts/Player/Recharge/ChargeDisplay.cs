@@ -6,24 +6,23 @@ public class ChargeDisplay : MonoBehaviour
 {
     [SerializeField] private MonoBehaviour _source;
     [SerializeField] private Slider _slider;
+    [SerializeField] private Recharge _recharge;
 
-    private Recharge _recharge;
     private IFillable _fillable;
 
     private void Awake()
     {
-        _recharge = GetComponent<Recharge>();
         _fillable = _source as IFillable;
     }
 
     private void OnEnable()
     {
-            _fillable.ValueChanged += OnChargeChanged;
+        _fillable.ValueChanged += OnChargeChanged;
     }
 
     private void OnDisable()
     {
-            _fillable.ValueChanged -= OnChargeChanged;
+        _fillable.ValueChanged -= OnChargeChanged;
     }
 
     private void Start()

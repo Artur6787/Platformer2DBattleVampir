@@ -433,6 +433,7 @@ MonoBehaviour:
   _animationHandler: {fileID: 1995390905643558334}
   _inputHandler: {fileID: 3413105433746189696}
   _doubleClickTime: 0.25
+  _comboResetDelay: 0.4
 --- !u!114 &3269963163803453449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,7 +518,7 @@ MonoBehaviour:
   _hitPosition: {fileID: 1704801472398585014}
   _inputHandler: {fileID: 3413105433746189696}
   _animationHandler: {fileID: 0}
-  _relay: {fileID: 7042568932501007593}
+  _relay: {fileID: 0}
   _attackMaxDuration: 0.6
 --- !u!114 &4282270604130922830
 MonoBehaviour:
@@ -544,7 +545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718994cf4d0b8e848972ef9c97ba5850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _relay: {fileID: 7042568932501007593}
+  _relay: {fileID: 0}
 --- !u!1 &3079575012995555274
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,7 +967,6 @@ GameObject:
   - component: {fileID: 4956783587826153208}
   - component: {fileID: 5118773634925116882}
   - component: {fileID: 4018742010209036902}
-  - component: {fileID: 7042568932501007593}
   - component: {fileID: 1995390905643558334}
   m_Layer: 3
   m_Name: 'SpriteVisual '
@@ -1063,18 +1063,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7042568932501007593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5806396098880522538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956155bf2067f9c499f5b33abd6099ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1995390905643558334
 MonoBehaviour:
   m_ObjectHideFlags: 0

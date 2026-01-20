@@ -1,58 +1,59 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
+//[RequireComponent(typeof(Animator))]
 public class EnemyAnimator : MonoBehaviour
 {
-    [SerializeField] private int _damage = 10;
-    [SerializeField] private float _attackRange = 2f;
-    [SerializeField] private Enemy _enemy;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private Player _cachedPlayer;
+    //private static readonly int HitTrigger = Animator.StringToHash("HitTrigger");
+
+    public event Action AttackHit;
+    public event Action AttackEnded;
+
+    private AnimationHandler _animationHandler;
+    //private Animator _animator;
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
-        _enemy = GetComponentInParent<Enemy>();
+        _animationHandler = GetComponent<AnimationHandler>();
+        //_animator = GetComponent<Animator>();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void PlayAttack()
     {
-        if (other.TryGetComponent<Player>(out var player))
-        {
-            _cachedPlayer = player;
-            _enemy.OnHitAnimationStart();
-            _animator.SetTrigger("HitTrigger");
-        }
+        _animationHandler.TriggerEnemyHit();
+        //_animator.SetTrigger(HitTrigger);
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.TryGetComponent<Player>(out _))
-        {
-            _cachedPlayer = null;
-        }
-    }
-
+    // Animation Event
     public void DealDamage()
     {
-        Vector2 enemyPosition = transform.position;
-        Vector2 playerPosition = _cachedPlayer.transform.position;
-        float sqrDistance = (playerPosition - enemyPosition).sqrMagnitude;
-
-        if (sqrDistance >= _attackRange)
-            return;
-
-        _cachedPlayer.TakeDamage(_damage);
+        AttackHit?.Invoke();
     }
 
-    public void OnHitEnd()
+    public void OnAttackAnimationEnd()
     {
-        _enemy.OnHitAnimationEnd();
+        AttackEnded?.Invoke();
     }
+    //private static readonly int HitTrigger = Animator.StringToHash("HitTrigger");
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
-    }
+    //private Animator _animator;
+    //private Enemy _enemy;
+
+    //private void Awake()
+    //{
+    //    _animator = GetComponent<Animator>();
+    //    _enemy = GetComponentInParent<Enemy>();
+    //}
+
+    //public void PlayAttack()
+    //{
+    //    _enemy.StartAttack();
+    //    _animator.SetTrigger(HitTrigger);
+    //}
+
+    //// вызывается анимационным эвентом
+    //public void OnAttackAnimationEnd()
+    //{
+    //    _enemy.EndAttack();
+    //}
 }

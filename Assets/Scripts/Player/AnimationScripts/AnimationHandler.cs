@@ -7,6 +7,7 @@ public class AnimationHandler : MonoBehaviour
     private static readonly int s_isRunningHash = Animator.StringToHash("isRunning");
     private static readonly int s_attackTriggerHash = Animator.StringToHash("attackTrigger");
     private static readonly int s_comboAttackTriggerHash = Animator.StringToHash("comboAttackTrigger");
+    private static readonly int s_hitEnemyTriggerHash = Animator.StringToHash("hitEnemyTrigger");
 
     private Animator _animator;
 
@@ -17,7 +18,8 @@ public class AnimationHandler : MonoBehaviour
 
     public void UpdateJumpState(bool isJumping)
     {
-        if (_animator == null) return;
+        if (_animator == null) 
+            return;
 
         _animator.SetBool(s_isJumpingHash, isJumping);
     }
@@ -35,5 +37,10 @@ public class AnimationHandler : MonoBehaviour
     public void TriggerComboAttack()
     {
         _animator.SetTrigger(s_comboAttackTriggerHash);
+    }
+
+    public void TriggerEnemyHit() 
+    {
+        _animator.SetTrigger(s_hitEnemyTriggerHash);
     }
 }
