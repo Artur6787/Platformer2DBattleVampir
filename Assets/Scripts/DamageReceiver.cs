@@ -10,7 +10,6 @@ public class DamageReceiver : MonoBehaviour
     private void Awake()
     {
         _health = GetComponent<Health>();
-        //_invincibility = GetComponent<Invincibility>();
     }
 
     public void TakeDamage(int damage)

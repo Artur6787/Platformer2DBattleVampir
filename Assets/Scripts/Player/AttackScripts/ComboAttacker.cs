@@ -58,8 +58,6 @@ public class ComboAttacker : MonoBehaviour
         Invoke(nameof(ResetState), _comboResetDelay);
     }
 
-
-
     private void StartResetCoroutine()
     {
         StopResetCoroutine();
@@ -80,9 +78,6 @@ public class ComboAttacker : MonoBehaviour
         yield return new WaitForSeconds(_comboResetDelay);
         ResetState();
     }
-
-
-
 
     private void ResetState()
     {

@@ -5,9 +5,10 @@ public class EnemyAttack : MonoBehaviour
 {
     [SerializeField] private int _damage = 10;
     [SerializeField] private float _attackRange = 2f;
+    [SerializeField] private EnemyAnimator _animator;
 
     private Player _cachedPlayer;
-    [SerializeField] private EnemyAnimator _animator;
+    
 
     public event Action AttackStarted;
 
@@ -24,8 +25,6 @@ public class EnemyAttack : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponentInChildren<EnemyAnimator>();
-
-        //_animator = GetComponent<EnemyAnimator>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -46,7 +45,6 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-    // вызывается анимационным эвентом
     public void DealDamage()
     {
         if (_cachedPlayer == null)
