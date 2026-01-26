@@ -30,7 +30,7 @@ public class Invincibility : MonoBehaviour
     public void MakeProtected()
     {
         _isProtected = true;
-        SetLayerCollision(true);
+        //SetLayerCollision(true);
         StopAllCoroutines();
         _blinkCoroutine = StartCoroutine(Blinking());
         _protectionCoroutine = StartCoroutine(ProtectionTimer());
@@ -47,10 +47,10 @@ public class Invincibility : MonoBehaviour
         _enemyLayerIndex = LayerMask.NameToLayer(EnemyLayer);
     }
 
-    private void SetLayerCollision(bool ignore)
-    {
-        Physics2D.IgnoreLayerCollision(_playerLayerIndex, _enemyLayerIndex, ignore);
-    }
+    //private void SetLayerCollision(bool ignore)
+    //{
+    //    Physics2D.IgnoreLayerCollision(_playerLayerIndex, _enemyLayerIndex, ignore);
+    //}
 
     private IEnumerator ProtectionTimer()
     {
@@ -81,7 +81,7 @@ public class Invincibility : MonoBehaviour
     private void DisableProtection()
     {
         _isProtected = false;
-        SetLayerCollision(false);
+        //SetLayerCollision(false);
         SetAlpha(FullyVisibleAlpha);
     }
 }

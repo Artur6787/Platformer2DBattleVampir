@@ -2,15 +2,15 @@ using UnityEngine;
 
 [RequireComponent(typeof(Patroller))]
 [RequireComponent(typeof(Health))]
-[RequireComponent(typeof(EnemyMover))]
+[RequireComponent(typeof(MoverObject))]
 [RequireComponent(typeof(Rotator))]
 [RequireComponent(typeof(Vision))]
-[RequireComponent(typeof(EnemyAttack))]
+[RequireComponent(typeof(EnemyAttacker))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyAnimator _animator;
-    [SerializeField] private EnemyAttack _attack;
-    [SerializeField] private EnemyMover _mover;
+    [SerializeField] private EnemyAttacker _attack;
+    [SerializeField] private MoverObject _mover;
     [SerializeField] private Patroller _patroller;
     [SerializeField] private Health _health;
     [SerializeField] private Rotator _rotator;
@@ -20,13 +20,13 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        _mover = GetComponent<EnemyMover>();
+        _mover = GetComponent<MoverObject>();
         _patroller = GetComponent<Patroller>();
         _health = GetComponent<Health>();
         _rotator = GetComponent<Rotator>();
         _vision = GetComponent<Vision>();
         _animator = GetComponentInChildren<EnemyAnimator>();
-        _attack = GetComponent<EnemyAttack>();
+        _attack = GetComponent<EnemyAttacker>();
     }
 
     private void OnEnable()
@@ -62,7 +62,6 @@ public class Enemy : MonoBehaviour
             targetPosition = _patroller.GetNextTargetPosition();
         }
 
-
         Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
 
         _mover.MoveTowards(targetPosition);
@@ -71,7 +70,7 @@ public class Enemy : MonoBehaviour
 
     private void LookAtPlayer()
     {
-        if (!_vision.IsPlayerVisible())
+        if (_vision.IsPlayerVisible() == false)
             return;
 
         Vector2 direction = (_vision.GetTargetPosition() - (Vector2)transform.position).normalized;

@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 1588264218563219705}
   - component: {fileID: 3517094319591584540}
   - component: {fileID: -8405771201483302134}
+  - component: {fileID: -1831917322100969497}
   - component: {fileID: -8764508540928121903}
   - component: {fileID: -4112216568518986975}
-  - component: {fileID: -4358232195100547363}
-  - component: {fileID: 7563294543733692633}
+  - component: {fileID: 2745865154415080185}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -124,6 +124,33 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.675
+--- !u!50 &-1831917322100969497
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882156038779370599}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &-8764508540928121903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ebcb940cf033574ea3457250e8ce93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mover: {fileID: 2745865154415080185}
+  _vision: {fileID: -4112216568518986975}
 --- !u!114 &-4112216568518986975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +180,7 @@ MonoBehaviour:
   _visionDistance: 5
   _searchInterval: 0.5
   _playerInvincibility: {fileID: 0}
---- !u!114 &-4358232195100547363
+--- !u!114 &2745865154415080185
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,21 +189,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 882156038779370599}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 610dc37e599aa704f8db26aee0003cce, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d724bc7d86faf949bde9388e2ad7eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7563294543733692633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 882156038779370599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60a377d80c43f9a4cbe9271f71f6c28d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _moveSpeed: 5
-  _stopDistance: 3
-  _chaser: {fileID: -4358232195100547363}
+  _speed: 5

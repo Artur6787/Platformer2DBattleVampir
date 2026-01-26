@@ -37,9 +37,6 @@ public class Vision : MonoBehaviour
         if (_target == null)
             return false;
 
-        if (_playerInvincibility != null && _playerInvincibility.IsProtected())
-            return false;
-
         Vector2 origin = transform.position;
         Vector2 toTarget = (Vector2)_target.position - origin;
         float distanceSqr = toTarget.magnitude;

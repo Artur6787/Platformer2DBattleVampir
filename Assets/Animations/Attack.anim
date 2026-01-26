@@ -86,16 +86,16 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.016666668
-    functionName: OnHit
+    functionName: OnAnimationHit
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: 956155bf2067f9c499f5b33abd6099ab, type: 3}
+    objectReferenceParameter: {fileID: 11500000, guid: 718994cf4d0b8e848972ef9c97ba5850, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.13333334
-    functionName: OnAttackEnd
+    functionName: OnAnimationEnd
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: 956155bf2067f9c499f5b33abd6099ab, type: 3}
+    objectReferenceParameter: {fileID: 11500000, guid: 718994cf4d0b8e848972ef9c97ba5850, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

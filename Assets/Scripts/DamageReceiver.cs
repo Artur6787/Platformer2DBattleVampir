@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class DamageReceiver : MonoBehaviour
 {
+    //[SerializeField] private Invincibility _invincibility;
     [SerializeField] private Invincibility _invincibility;
 
     private Health _health;
@@ -23,6 +24,10 @@ public class DamageReceiver : MonoBehaviour
             return;
         }
 
+        //float actualDamage = _health.TakeDamage(damage);
+
+        //if (actualDamage > 0 && _invincibility != null)
+        //    _invincibility.MakeProtected();
         _health.TakeDamage(damage);
 
         if (_invincibility != null)

@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _source: {fileID: 7111671273175330318}
   _slider: {fileID: 1467294819759016445}
+  _recharge: {fileID: 0}
 --- !u!114 &6716032784494018630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,7 +236,6 @@ GameObject:
   - component: {fileID: 7111671273175330318}
   - component: {fileID: 6776655614599276836}
   - component: {fileID: 2397747490990146111}
-  - component: {fileID: 8683416948757578800}
   - component: {fileID: 7251268891319208643}
   - component: {fileID: 5172013198857158351}
   - component: {fileID: 8808582007025170748}
@@ -377,21 +377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa4de3ae65df054bb3b9d9d09309ea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8683416948757578800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2263692784809603520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69057926870cec047981f471011881fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _protectionDuration: 2
-  _blinkSpeed: 0.2
-  _blinkAlpha: 0.3
 --- !u!114 &7251268891319208643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f3e0a038ff83ea4288d3895a470f7b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _invincibility: {fileID: 0}
 --- !u!114 &5172013198857158351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,10 +435,10 @@ MonoBehaviour:
   _speed: 5
   _jumpForce: 10
   _directionHandler: {fileID: 4282270604130922830}
-  _attacker: {fileID: 5743450398185376895}
   _animationHandler: {fileID: 1995390905643558334}
   _inputHandler: {fileID: 3413105433746189696}
   _groundDetector: {fileID: 6616205796081957165}
+  _player: {fileID: 0}
 --- !u!114 &3413105433746189696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,7 +483,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef15e70d1137ef34db7b477bd80c170c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: {fileID: 6776655614599276836}
+  _mover: {fileID: 0}
+  _attacker: {fileID: 0}
+  _damageReceiver: {fileID: 0}
 --- !u!114 &5743450398185376895
 MonoBehaviour:
   m_ObjectHideFlags: 0
